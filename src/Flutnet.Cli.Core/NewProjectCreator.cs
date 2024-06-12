@@ -27,7 +27,6 @@ using Flutnet.Utilities;
 using Medallion.Shell;
 using Microsoft.Build.Construction;
 using Microsoft.Build.Evaluation;
-using Microsoft.Build.Locator;
 using OperatingSystem = Flutnet.Cli.Core.Utilities.OperatingSystem;
 
 namespace Flutnet.Cli.Core
@@ -48,15 +47,15 @@ namespace Flutnet.Cli.Core
 
         public static void Create(NewProjectSettings settings, bool verbose = false)
         {
-            try
-            {
-                MSBuildLocator.RegisterDefaults();
-            }
-            catch (Exception e)
-            {
-                Log.Ex(e);
-                throw new CommandLineException(CommandLineErrorCode.NewProject_MSBuildDetectionFailed, e);
-            }
+            //try
+            //{
+            //    MSBuildLocator.RegisterDefaults();
+            //}
+            //catch (Exception e)
+            //{
+            //    Log.Ex(e);
+            //    throw new CommandLineException(CommandLineErrorCode.NewProject_MSBuildDetectionFailed, e);
+            //}
 
             try
             {

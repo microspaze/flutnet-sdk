@@ -18,12 +18,12 @@
 using System;
 using System.Net;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using Flutnet.Cli.Core.Utilities;
 using FlutnetSite.WebApi.DTO;
 using Newtonsoft.Json;
 using RestSharp;
-using RestSharp.Serialization;
 
 namespace Flutnet.Cli.Core.Infrastructure
 {
@@ -44,7 +44,7 @@ namespace Flutnet.Cli.Core.Infrastructure
     
             RestClient client = new RestClient(VersionBaseUri);
 
-            RestRequest request = new RestRequest("check-updates", Method.POST);
+            RestRequest request = new RestRequest("check-updates", Method.Post);
             request.AddJsonBody(dto);
 
             WebApiAdvancedResponse<CheckForUpdatesResponse, ApiError> response = MakeRequest<CheckForUpdatesResponse, ApiError>(client, request);
@@ -72,77 +72,77 @@ namespace Flutnet.Cli.Core.Infrastructure
 
         private static WebApiRawResponse Download(RestClient client, RestRequest request)
         {
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             return WrapRawRestResponse(client, request, response);
         }
 
         private static WebApiAdvancedRawResponse<TErrorContent> Download<TErrorContent>(RestClient client, RestRequest request)
         {
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             return WrapAdvancedRawRestResponse<TErrorContent>(client, request, response);
         }
 
         private static async Task<WebApiRawResponse> DownloadAsync(RestClient client, RestRequest request)
         {
-            IRestResponse response = await client.ExecuteAsync(request);
+            RestResponse response = await client.ExecuteAsync(request);
             return WrapRawRestResponse(client, request, response);
         }
 
         private static async Task<WebApiAdvancedRawResponse<TErrorContent>> DownloadAsync<TErrorContent>(RestClient client, RestRequest request)
         {
-            IRestResponse response = await client.ExecuteAsync(request);
+            RestResponse response = await client.ExecuteAsync(request);
             return WrapAdvancedRawRestResponse<TErrorContent>(client, request, response);
         }
 
         private static WebApiResponse<TContent> MakeRequest<TContent>(RestClient client, RestRequest request)
         {
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             return WrapRestResponse<TContent>(client, request, response);
         }
 
         private static WebApiAdvancedResponse<TContent, TErrorContent> MakeRequest<TContent, TErrorContent>(RestClient client, RestRequest request)
         {
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             return WrapAdvancedRestResponse<TContent, TErrorContent>(client, request, response);
         }
 
         private static async Task<WebApiResponse<TContent>> MakeRequestAsync<TContent>(RestClient client, RestRequest request)
         {
-            IRestResponse response = await client.ExecuteAsync(request);
+            RestResponse response = await client.ExecuteAsync(request);
             return WrapRestResponse<TContent>(client, request, response);
         }
 
         private static async Task<WebApiAdvancedResponse<TContent, TErrorContent>> MakeRequestAsync<TContent, TErrorContent>(RestClient client, RestRequest request)
         {
-            IRestResponse response = await client.ExecuteAsync(request);
+            RestResponse response = await client.ExecuteAsync(request);
             return WrapAdvancedRestResponse<TContent, TErrorContent>(client, request, response);
         }
 
         private static WebApiResponse MakeCall(RestClient client, RestRequest request)
         {
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             return WrapRestResponse(client, request, response);
         }
 
         private static WebApiAdvancedResponse<TErrorContent> MakeCall<TErrorContent>(RestClient client, RestRequest request)
         {
-            IRestResponse response = client.Execute(request);
+            RestResponse response = client.Execute(request);
             return WrapAdvancedRestResponse<TErrorContent>(client, request, response);
         }
 
         private static async Task<WebApiResponse> MakeCallAsync(RestClient client, RestRequest request)
         {
-            IRestResponse response = await client.ExecuteAsync(request);
+            RestResponse response = await client.ExecuteAsync(request);
             return WrapRestResponse(client, request, response);
         }
 
         private static async Task<WebApiAdvancedResponse<TErrorContent>> MakeCallAsync<TErrorContent>(RestClient client, RestRequest request)
         {
-            IRestResponse response = await client.ExecuteAsync(request);
+            RestResponse response = await client.ExecuteAsync(request);
             return WrapAdvancedRestResponse<TErrorContent>(client, request, response);
         }
 
-        private static WebApiResponse WrapRestResponse(RestClient client, RestRequest request, IRestResponse response)
+        private static WebApiResponse WrapRestResponse(RestClient client, RestRequest request, RestResponse response)
         {
             WebApiResponse result = new WebApiResponse();
 
@@ -165,7 +165,7 @@ namespace Flutnet.Cli.Core.Infrastructure
             return result;
         }
 
-        private static WebApiResponse<TContent> WrapRestResponse<TContent>(RestClient client, RestRequest request, IRestResponse response)
+        private static WebApiResponse<TContent> WrapRestResponse<TContent>(RestClient client, RestRequest request, RestResponse response)
         {
             WebApiResponse<TContent> result = new WebApiResponse<TContent>();
 
@@ -189,7 +189,7 @@ namespace Flutnet.Cli.Core.Infrastructure
             return result;
         }
 
-        private static WebApiRawResponse WrapRawRestResponse(RestClient client, RestRequest request, IRestResponse response)
+        private static WebApiRawResponse WrapRawRestResponse(RestClient client, RestRequest request, RestResponse response)
         {
             WebApiRawResponse result = new WebApiRawResponse();
 
@@ -213,7 +213,7 @@ namespace Flutnet.Cli.Core.Infrastructure
             return result;
         }
 
-        private static WebApiAdvancedResponse<TErrorContent> WrapAdvancedRestResponse<TErrorContent>(RestClient client, RestRequest request, IRestResponse response)
+        private static WebApiAdvancedResponse<TErrorContent> WrapAdvancedRestResponse<TErrorContent>(RestClient client, RestRequest request, RestResponse response)
         {
             WebApiAdvancedResponse<TErrorContent> result = new WebApiAdvancedResponse<TErrorContent>();
 
@@ -237,7 +237,7 @@ namespace Flutnet.Cli.Core.Infrastructure
             return result;
         }
 
-        private static WebApiAdvancedResponse<TContent, TErrorContent> WrapAdvancedRestResponse<TContent, TErrorContent>(RestClient client, RestRequest request, IRestResponse response)
+        private static WebApiAdvancedResponse<TContent, TErrorContent> WrapAdvancedRestResponse<TContent, TErrorContent>(RestClient client, RestRequest request, RestResponse response)
         {
             WebApiAdvancedResponse<TContent, TErrorContent> result = new WebApiAdvancedResponse<TContent, TErrorContent>();
 
@@ -262,7 +262,7 @@ namespace Flutnet.Cli.Core.Infrastructure
             return result;
         }
 
-        private static WebApiAdvancedRawResponse<TErrorContent> WrapAdvancedRawRestResponse<TErrorContent>(RestClient client, RestRequest request, IRestResponse response)
+        private static WebApiAdvancedRawResponse<TErrorContent> WrapAdvancedRawRestResponse<TErrorContent>(RestClient client, RestRequest request, RestResponse response)
         {
             WebApiAdvancedRawResponse<TErrorContent> result = new WebApiAdvancedRawResponse<TErrorContent>();
 
@@ -287,7 +287,7 @@ namespace Flutnet.Cli.Core.Infrastructure
             return result;
         }
 
-        private static T ParseRestResponse<T>(RestClient client, IRestResponse response)
+        private static T ParseRestResponse<T>(RestClient client, RestResponse response)
         {
             Type type = typeof(T);
             if (type.IsEnum)
@@ -296,33 +296,12 @@ namespace Flutnet.Cli.Core.Infrastructure
             }
             else
             {
-                IRestResponse<T> typedResponse = client.Deserialize<T>(response);
+                RestResponse<T> typedResponse = client.Deserialize<T>(response, CancellationToken.None).Result;
                 return typedResponse.Data;
             }
         }
 
 #endregion
-    }
-
-    internal class JsonNetSerializer : IRestSerializer
-    {
-        public string Serialize(object obj) =>
-            JsonConvert.SerializeObject(obj);
-
-        public string Serialize(Parameter parameter) =>
-            JsonConvert.SerializeObject(parameter.Value);
-
-        public T Deserialize<T>(IRestResponse response) =>
-            JsonConvert.DeserializeObject<T>(response.Content);
-
-        public string[] SupportedContentTypes { get; } =
-        {
-            "application/json", "text/json", "text/x-json", "text/javascript", "*+json"
-        };
-
-        public string ContentType { get; set; } = "application/json";
-
-        public DataFormat DataFormat { get; } = DataFormat.Json;
     }
 
     /// <summary>
